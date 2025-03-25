@@ -1,2 +1,4 @@
-# functions
-Typography &amp; Interaction Project 5: Functions
+Project 5: Functions
+
+Typography & Interaction Spring 2025
+

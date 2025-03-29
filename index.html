@@ -5,12 +5,75 @@
 		<title>Typography and Interaction: Functions</title>
 		<link href="assets/reset.css" rel="stylesheet">
 		<link href="assets/style.css" rel="stylesheet">
-		<script defer src="assets/main.js"></script>
+		<script defer src="assets/form-state.js"></script>
 	</head>
 
 	<body>
 		<header>
 			<h1>Melody Clock</h1>
+			<button id="addtask">+</button>
 		</header>
+
+		<!-- timer and start and pause buttons-->
+		<div id="timerbox">
+			<div id="countdown">00:00</div>
+			<div id="timer-controls">
+				<button id="start-timer">▶ Play</button>
+				<button id="pause-timer">⏸ Pause</button>
+			</div>
+		</div>
+
+		<!-- background images-->
+		<div class="background-image">
+			<img src="https://images.unsplash.com/photo-1513128034602-7814ccaddd4e?q=80&w=3024&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="default-background">
+			<div class="overlay"></div>
+		  </div>
+
+		<section>
+			<ul id="tasklist">
+				<!-- scheduled tasks will appear here -->
+			</ul>
+		</section>
+		
+		<!-- Task input -->
+		<div id="inputtask" class="hidden">
+			<form id="taskform">
+				<label>
+					Mode
+					<select id="tasktype">
+						<option value="work">Work</option>
+						<option value="relax">Relax</option>
+					</select>
+				</label>
+
+				<label>
+					Task Name
+					<input type="text" id="taskname" placeholder="What will you work on?" required />
+				</label>
+
+				<label>
+					Duration (minutes)
+					<input type="number" id="taskduration" min="1" placeholder="e.g. 45" required />
+				</label>
+
+				<label>
+					Background Music
+					<select id="backgroundmusic">
+						<option value="forestcafe">1. Forest Cafe Music</option>
+						<option value="lofi">2. Lofi Work Music</option>
+						<option value="whitenoise">3. White Noise in Cafe</option>
+						<option value="rainyday">4. Rainy Day Music</option>
+						<option value="cozyjazz">5. Cozy Jazz Music</option>
+					</select>
+				</label>
+
+				<div class="submit-buttons">
+					<button id="cancel">Cancel</button>
+					<button id="submit">Add Task</button>
+				</div>
+			</form>
+		</div>
+		
+
 	</body>
 </html>

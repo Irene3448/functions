@@ -4,6 +4,7 @@
 	--primary-font-style: 'Funnel Sans';
 	
 	--button-color: #4C00FF;
+	--font-color: #999;
 
 	--header-font-size: 20px;
 	--body-font-size: 16px;
@@ -195,7 +196,7 @@ section{
 }
 
 #taskform input, #taskform select {
-	color: var(--button-color);
+	color: var(--font-color);
 	border: solid 1px #999;
 	border-radius: 5px;
 	width: 100%;
@@ -214,7 +215,7 @@ section{
 	border: 1px solid #999;
 	border-radius: 5px;
 	font-size: 1rem;
-	color: var(--button-color);
+	color: var(--font-color);
 	cursor: pointer;
 }
 

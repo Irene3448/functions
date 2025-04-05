@@ -198,7 +198,7 @@ section{
 	gap: 6px;
 }
 
-.edit-btn, .delete-btn {
+.delete-btn {
 	background: var(--button-color);
 	color:white;
 	cursor: pointer;
@@ -207,7 +207,7 @@ section{
 	border-radius: 30px;
 }
 
-.edit-btn:hover, .delete-btn:hover {
+.delete-btn:hover {
 	background-color: white;
 	color: var(--button-color);
 	border: solid 1px var(--button-color);

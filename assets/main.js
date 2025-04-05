@@ -14,12 +14,11 @@ let currentTaskIndex = 0;
 let timerInterval = null;
 let remainingSeconds = 0;
 let isPaused = true;
-let taskBeingEdited = null;
 
-// Initially hide controls
+// Hide play/reset buttons initially
 controlBtn.style.display = "none";
 
-// Utility to show/hide controls
+// Show/hide play/reset buttons
 function updateControlsVisibility() {
   if (taskQueue.length === 0) {
     controlBtn.style.display = "none";
@@ -31,19 +30,18 @@ function updateControlsVisibility() {
   }
 }
 
-// Show form
+// Show task input
 addBtn.addEventListener("click", () => {
   inputForm.style.display = "flex";
 });
 
-// Hide form
+// Hide form on cancel
 cancelBtn.addEventListener("click", (e) => {
   e.preventDefault();
   inputForm.style.display = "none";
-  taskBeingEdited = null;
 });
 
-// Submit or edit task
+// Add new task
 submitBtn.addEventListener("click", (e) => {
   e.preventDefault();
 
@@ -58,42 +56,21 @@ submitBtn.addEventListener("click", (e) => {
   }
 
   const formattedDuration = `${String(duration).padStart(2, "0")}:00`;
+  const task = { duration, music: moodValue };
 
-  if (taskBeingEdited) {
-    const li = taskBeingEdited.element;
-    const index = taskBeingEdited.index;
+  const li = document.createElement("li");
+  li.classList.add("task-item");
+  li.innerHTML = `
+    <div class="task-duration">${formattedDuration}</div>
+    <div class="task-mood">${moodText}</div>
+    <div class="task-actions">
+      <button class="delete-btn">🗑️</button>
+    </div>
+  `;
+  taskList.appendChild(li);
+  taskQueue.push(task);
 
-    li.innerHTML = `
-      <div class="task-duration">${formattedDuration}</div>
-      <div class="task-mood">${moodText}</div>
-      <div class="task-actions">
-        <button class="edit-btn">Edit</button>
-        <button class="delete-btn">🗑️</button>
-      </div>
-    `;
-
-    taskQueue[index] = { duration, music: moodValue };
-    attachTaskButtons(li, duration, moodValue, moodText, index);
-    isPaused = true;
-    clearInterval(timerInterval);
-    timerInterval = null;
-    controlBtn.textContent = "▶ Play";
-  } else {
-    const task = { duration, music: moodValue };
-    const li = document.createElement("li");
-    li.classList.add("task-item");
-    li.innerHTML = `
-      <div class="task-duration">${formattedDuration}</div>
-      <div class="task-mood">${moodText}</div>
-      <div class="task-actions">
-        <button class="edit-btn">Edit</button>
-        <button class="delete-btn">🗑️</button>
-      </div>
-    `;
-    taskList.appendChild(li);
-    taskQueue.push(task);
-    attachTaskButtons(li, duration, moodValue, moodText, taskQueue.length - 1);
-  }
+  attachTaskButtons(li, taskQueue.length - 1);
 
   taskArea.appendChild(addBtn);
   document.getElementById("taskform").reset();
@@ -103,7 +80,7 @@ submitBtn.addEventListener("click", (e) => {
   if (!resetBtn) createResetButton();
 });
 
-function attachTaskButtons(li, duration, moodValue, moodText, index) {
+function attachTaskButtons(li, index) {
   li.querySelector(".delete-btn").addEventListener("click", () => {
     const wasCurrent = index === currentTaskIndex;
     taskList.removeChild(li);
@@ -115,23 +92,11 @@ function attachTaskButtons(li, duration, moodValue, moodText, index) {
       isPaused = true;
       controlBtn.textContent = "▶ Play";
       if (currentTaskIndex >= taskQueue.length) {
-        currentTaskIndex = 0; // Reset index if no tasks left
+        currentTaskIndex = 0;
       }
     }
 
     updateControlsVisibility();
-  });
-
-  li.querySelector(".edit-btn").addEventListener("click", () => {
-    isPaused = true;
-    clearInterval(timerInterval);
-    timerInterval = null;
-    controlBtn.textContent = "▶ Play";
-
-    document.getElementById("taskduration").value = duration;
-    document.getElementById("mood").value = moodValue;
-    inputForm.style.display = "flex";
-    taskBeingEdited = { element: li, index: index };
   });
 }
 

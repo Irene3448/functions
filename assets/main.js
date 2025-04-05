@@ -1,4 +1,4 @@
-// ========== TASK FORM LOGIC ========== //
+// buttons
 const addBtn = document.getElementById("addtask");
 const inputForm = document.getElementById("inputtask");
 const cancelBtn = document.getElementById("cancel");
@@ -16,8 +16,20 @@ let remainingSeconds = 0;
 let isPaused = true;
 let taskBeingEdited = null;
 
-// Hide controls initially
+// Initially hide controls
 controlBtn.style.display = "none";
+
+// Utility to show/hide controls
+function updateControlsVisibility() {
+  if (taskQueue.length === 0) {
+    controlBtn.style.display = "none";
+    if (resetBtn) resetBtn.style.display = "none";
+  } else {
+    controlBtn.style.display = "inline-block";
+    controlBtn.textContent = "▶ Play";
+    if (resetBtn) resetBtn.style.display = "inline-block";
+  }
+}
 
 // Show form
 addBtn.addEventListener("click", () => {
@@ -87,7 +99,7 @@ submitBtn.addEventListener("click", (e) => {
   document.getElementById("taskform").reset();
   inputForm.style.display = "none";
 
-  controlBtn.style.display = "inline-block";
+  updateControlsVisibility();
   if (!resetBtn) createResetButton();
 });
 
@@ -96,13 +108,18 @@ function attachTaskButtons(li, duration, moodValue, moodText, index) {
     const wasCurrent = index === currentTaskIndex;
     taskList.removeChild(li);
     taskQueue.splice(index, 1);
+
     if (wasCurrent) {
       clearInterval(timerInterval);
-      isPaused = true;
       timerInterval = null;
+      isPaused = true;
       controlBtn.textContent = "▶ Play";
-      playCurrentTask();
+      if (currentTaskIndex >= taskQueue.length) {
+        currentTaskIndex = 0; // Reset index if no tasks left
+      }
     }
+
+    updateControlsVisibility();
   });
 
   li.querySelector(".edit-btn").addEventListener("click", () => {
@@ -119,7 +136,10 @@ function attachTaskButtons(li, duration, moodValue, moodText, index) {
 }
 
 function playCurrentTask() {
-  if (currentTaskIndex >= taskQueue.length) return;
+  if (currentTaskIndex >= taskQueue.length) {
+    updateControlsVisibility();
+    return;
+  }
 
   const task = taskQueue[currentTaskIndex];
   const taskLi = taskList.children[currentTaskIndex];
@@ -157,6 +177,7 @@ function playCurrentTask() {
         taskQueue.splice(currentTaskIndex, 1);
         audioPlayer.pause();
         new Audio("assets/audio/ding.mp3").play();
+        updateControlsVisibility();
         playCurrentTask();
       }
     }
@@ -192,5 +213,6 @@ function createResetButton() {
     audioPlayer.pause();
     controlBtn.textContent = "▶ Play";
     [...taskList.children].forEach(li => li.classList.remove("active"));
+    updateControlsVisibility();
   });
 }

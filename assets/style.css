@@ -93,7 +93,7 @@ header{
 #addtask:hover {
 	background-color: rgba(76, 0, 255, 0.7);
 	transform: scale(1.05);
-  }
+}
 
 /* #countdown {
 	font-size: 3.5rem;
@@ -197,6 +197,7 @@ section{
 
 #taskform input, #taskform select {
 	color: var(--font-color);
+	font-weight: 200;
 	border: solid 1px #999;
 	border-radius: 5px;
 	width: 100%;
@@ -205,9 +206,8 @@ section{
 }
 
 #taskform select{
-	appearance: none; /* removes default arrow */
+	appearance: auto;
 	background-color: white;
-	background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D'10'%20height%3D'6'%20viewBox%3D'0%200%2010%206'%20fill%3D'none'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Cpath%20d%3D'M1%201L5%205L9%201'%20stroke%3D'%234C00FF'%20stroke-width%3D'2'%20stroke-linecap%3D'round'%20stroke-linejoin%3D'round'/%3E%3C/svg%3E");
 	background-repeat: no-repeat;
 	background-position: right 10px center;
 	background-size: 12px;
@@ -215,7 +215,7 @@ section{
 	border: 1px solid #999;
 	border-radius: 5px;
 	font-size: 1rem;
-	color: var(--font-color);
+	color: var(--button-color);
 	cursor: pointer;
 }
 

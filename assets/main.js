@@ -8,6 +8,17 @@ const taskArea = document.getElementById("taskarea");
 const controlBtn = document.getElementById("start-timer");
 let resetBtn;
 
+// Audio setup
+const audioPlayer = document.getElementById("audioPlayer");
+
+const musicSources = {
+  forestcafe: "assets/audio/forestcafe.mp3",
+  lofi: "assets/audio/lofi.mp3",
+  whitenoise: "assets/audio/whitenoise.mp3",
+  rainyday: "assets/audio/rainyday.mp3",
+  cozyjazz: "assets/audio/cozyjazz.mp3"
+};
+
 // App state
 let taskQueue = [];
 let currentTaskIndex = 0;

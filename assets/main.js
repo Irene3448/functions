@@ -9,14 +9,14 @@ const controlBtn = document.getElementById("start-timer");
 let resetBtn;
 
 // Audio setup
-const audioPlayer = document.getElementById("audioPlayer");
+const audioPlayer = new Audio();
 
 const musicSources = {
-  forestcafe: "assets/audio/forestcafe.mp3",
-  lofi: "assets/audio/lofi.mp3",
-  whitenoise: "assets/audio/whitenoise.mp3",
+  cozyjazz: "assets/audio/cozyjazz.mp3",
   rainyday: "assets/audio/rainyday.mp3",
-  cozyjazz: "assets/audio/cozyjazz.mp3"
+  lofi: "assets/audio/lofi.mp3",
+  stressfree: "assets/audio/stressfree.mp3",
+  whitenoise: "assets/audio/whitenoise.mp3"
 };
 
 // App state
@@ -91,26 +91,43 @@ submitBtn.addEventListener("click", (e) => {
   if (!resetBtn) createResetButton();
 });
 
-function attachTaskButtons(li, index) {
+function attachTaskButtons(li, duration, moodValue, moodText, index) {
   li.querySelector(".delete-btn").addEventListener("click", () => {
     const wasCurrent = index === currentTaskIndex;
+
     taskList.removeChild(li);
     taskQueue.splice(index, 1);
 
+
+    // If task being deleted is the one currently playing
     if (wasCurrent) {
       clearInterval(timerInterval);
       timerInterval = null;
       isPaused = true;
+
+      // Stop music
+      if (!audioPlayer.paused) {
+        audioPlayer.pause();
+        audioPlayer.currentTime = 0; // Reset to beginning
+      }
+
+      // Reset button to ▶ Play
       controlBtn.textContent = "▶ Play";
+
+      // Reset current index if necessary
       if (currentTaskIndex >= taskQueue.length) {
         currentTaskIndex = 0;
       }
+
+      // Remove glow from all tasks
+      [...taskList.children].forEach(li => li.classList.remove("active"));
     }
 
     updateControlsVisibility();
   });
 }
 
+//music playing current task
 function playCurrentTask() {
   if (currentTaskIndex >= taskQueue.length) {
     updateControlsVisibility();
@@ -135,6 +152,7 @@ function playCurrentTask() {
 
   updateDisplay();
 
+  // Set and play music only if not paused
   if (musicSources[task.music]) {
     audioPlayer.src = musicSources[task.music];
     audioPlayer.loop = true;
@@ -167,8 +185,11 @@ controlBtn.addEventListener("click", () => {
   controlBtn.textContent = isPaused ? "▶ Resume" : "⏸ Pause";
 
   if (!isPaused) {
-    if (!timerInterval) playCurrentTask();
-    else audioPlayer.play();
+    if (!timerInterval) {
+      playCurrentTask(); 
+    } else {
+      audioPlayer.play().catch(err => console.log(err));
+    }
   } else {
     audioPlayer.pause();
   }

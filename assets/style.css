@@ -50,6 +50,60 @@ header{
 	transform: scale(1.05);
 }
 
+#settings-modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,0.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 2000;
+}
+
+#settings-content {
+	background: white;
+	padding: 20px;
+	border-radius: 10px;
+	min-width: 280px;
+	line-height: 30px;
+}
+
+#settings-content select {
+	color: var(--font-color);
+	font-weight: 200;
+	border: solid 1px #999;
+	border-radius: 5px;
+	width: 100%;
+	padding: 8px;
+	margin-top: 4px;
+	appearance: auto;
+	background-color: white;
+	background-repeat: no-repeat;
+	background-position: right 10px center;
+	background-size: 12px;
+	padding-right: 30px;
+	font-size: 1rem;
+	cursor: pointer;
+}
+
+.settings-buttons {
+	margin-top: 15px;
+}
+
+#settings-modal.hidden {
+	display: none;
+}
+
+#close-settings{
+	background-color: #cacaca;
+	color: black;
+	padding: 7px 15px;
+	border-radius: 5px;
+}
+
 /* timer style */
 #timerbox {
 	text-align: center;

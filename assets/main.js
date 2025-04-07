@@ -1,4 +1,4 @@
-// buttons
+// Buttons
 const addBtn = document.getElementById("addtask");
 const inputForm = document.getElementById("inputtask");
 const cancelBtn = document.getElementById("cancel");
@@ -6,11 +6,14 @@ const submitBtn = document.getElementById("submit");
 const taskList = document.getElementById("tasklist");
 const taskArea = document.getElementById("taskarea");
 const controlBtn = document.getElementById("start-timer");
+const settingsBtn = document.getElementById("setting");
+const settingsModal = document.getElementById("settings-modal");
+const closeSettingsBtn = document.getElementById("close-settings");
 let resetBtn;
+let breakDuration = 600;
 
 // Audio setup
 const audioPlayer = new Audio();
-
 const musicSources = {
   cozyjazz: "assets/audio/cozyjazz.mp3",
   rainyday: "assets/audio/rainyday.mp3",
@@ -19,6 +22,10 @@ const musicSources = {
   whitenoise: "assets/audio/whitenoise.mp3"
 };
 
+//break audio
+const breakStartAudio = new Audio("assets/audio/break-start.mp3");
+const breakEndAudio = new Audio("assets/audio/break-end.mp3");
+
 // App state
 let taskQueue = [];
 let currentTaskIndex = 0;
@@ -26,7 +33,7 @@ let timerInterval = null;
 let remainingSeconds = 0;
 let isPaused = true;
 
-// Hide play/reset buttons initially
+// Hide controls initially
 controlBtn.style.display = "none";
 
 // Show/hide play/reset buttons
@@ -34,25 +41,26 @@ function updateControlsVisibility() {
   if (taskQueue.length === 0) {
     controlBtn.style.display = "none";
     if (resetBtn) resetBtn.style.display = "none";
+    currentTaskIndex = 0;
   } else {
     controlBtn.style.display = "inline-block";
-    controlBtn.textContent = "▶ Play";
+    controlBtn.textContent = isPaused ? "▶ Play" : "⏸ Pause";
     if (resetBtn) resetBtn.style.display = "inline-block";
   }
 }
 
-// Show task input
+// Show task input form
 addBtn.addEventListener("click", () => {
   inputForm.style.display = "flex";
 });
 
-// Hide form on cancel
+// Cancel input
 cancelBtn.addEventListener("click", (e) => {
   e.preventDefault();
   inputForm.style.display = "none";
 });
 
-// Add new task
+// Submit task
 submitBtn.addEventListener("click", (e) => {
   e.preventDefault();
 
@@ -83,51 +91,50 @@ submitBtn.addEventListener("click", (e) => {
 
   attachTaskButtons(li, taskQueue.length - 1);
 
-  taskArea.appendChild(addBtn);
   document.getElementById("taskform").reset();
   inputForm.style.display = "none";
-
   updateControlsVisibility();
+
   if (!resetBtn) createResetButton();
 });
 
-function attachTaskButtons(li, duration, moodValue, moodText, index) {
+// Attach delete behavior
+function attachTaskButtons(li, index) {
   li.querySelector(".delete-btn").addEventListener("click", () => {
-    const wasCurrent = index === currentTaskIndex;
+    const isCurrentTask = li === taskList.children[currentTaskIndex];
+
+    if (isCurrentTask && !isPaused) {
+      alert("⏸ Pause the task before deleting.");
+      return;
+    }
 
     taskList.removeChild(li);
     taskQueue.splice(index, 1);
 
-
-    // If task being deleted is the one currently playing
-    if (wasCurrent) {
+    if (isCurrentTask) {
       clearInterval(timerInterval);
       timerInterval = null;
       isPaused = true;
-
-      // Stop music
-      if (!audioPlayer.paused) {
-        audioPlayer.pause();
-        audioPlayer.currentTime = 0; // Reset to beginning
-      }
-
-      // Reset button to ▶ Play
+      audioPlayer.pause();
+      audioPlayer.currentTime = 0;
       controlBtn.textContent = "▶ Play";
 
-      // Reset current index if necessary
+      [...taskList.children].forEach(li => li.classList.remove("active"));
+
       if (currentTaskIndex >= taskQueue.length) {
         currentTaskIndex = 0;
       }
+    }
 
-      // Remove glow from all tasks
-      [...taskList.children].forEach(li => li.classList.remove("active"));
+    if (index < currentTaskIndex) {
+      currentTaskIndex--;
     }
 
     updateControlsVisibility();
   });
 }
 
-//music playing current task
+// Play current task
 function playCurrentTask() {
   if (currentTaskIndex >= taskQueue.length) {
     updateControlsVisibility();
@@ -152,11 +159,10 @@ function playCurrentTask() {
 
   updateDisplay();
 
-  // Set and play music only if not paused
   if (musicSources[task.music]) {
     audioPlayer.src = musicSources[task.music];
     audioPlayer.loop = true;
-    if (!isPaused) audioPlayer.play();
+    if (!isPaused) audioPlayer.play().catch(err => console.log("Audio error:", err));
   }
 
   clearInterval(timerInterval);
@@ -172,12 +178,68 @@ function playCurrentTask() {
         audioPlayer.pause();
         new Audio("assets/audio/ding.mp3").play();
         updateControlsVisibility();
-        playCurrentTask();
+        
+        if (taskQueue.length > 0) {
+          const breakSelect = document.getElementById("break-duration");
+          const breakSeconds = parseInt(breakSelect.value) || 600; // default to 10 minutes
+          startBreak(breakSeconds);
+        }
       }
     }
   }, 1000);
 }
 
+//break starts
+function startBreak(durationInSeconds) {
+  let breakTime = durationInSeconds;
+  breakStartAudio.play();
+
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    breakTime--;
+
+    if (breakTime === 5) {
+      breakEndAudio.play(); // 🔊 5 seconds before break ends
+    }
+
+    if (breakTime <= 0) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      currentTaskIndex++;
+      playCurrentTask(); // Resume to next task
+    }
+  }, 1000);
+}
+
+//break time
+function startBreakPeriod() {
+  const restStartAudio = new Audio("assets/audio/rest-start.mp3");
+  const restEndAudio = new Audio("assets/audio/rest-end.mp3");
+
+  restStartAudio.play();
+
+  let breakSeconds = breakDuration;
+  clearInterval(timerInterval);
+
+  timerInterval = setInterval(() => {
+    breakSeconds--;
+
+    // Optionally update UI with break countdown
+    if (breakSeconds <= 5 && breakSeconds > 0) {
+      // maybe flash something like "Get ready..."
+    }
+
+    if (breakSeconds <= 0) {
+      clearInterval(timerInterval);
+      restEndAudio.play();
+      isPaused = true;
+      controlBtn.textContent = "▶ Play";
+      playCurrentTask(); // load the next task, but keep it paused
+    }
+  }, 1000);
+}
+
+// Toggle play/pause
 controlBtn.addEventListener("click", () => {
   if (taskQueue.length === 0) return;
 
@@ -186,7 +248,7 @@ controlBtn.addEventListener("click", () => {
 
   if (!isPaused) {
     if (!timerInterval) {
-      playCurrentTask(); 
+      playCurrentTask();
     } else {
       audioPlayer.play().catch(err => console.log(err));
     }
@@ -195,6 +257,7 @@ controlBtn.addEventListener("click", () => {
   }
 });
 
+// Reset button
 function createResetButton() {
   resetBtn = document.createElement("button");
   resetBtn.textContent = "Reset";
@@ -213,3 +276,22 @@ function createResetButton() {
     updateControlsVisibility();
   });
 }
+
+// Ensure correct state on load
+updateControlsVisibility();
+
+//setting modal
+settingsBtn.addEventListener("click", () => {
+  settingsModal.classList.remove("hidden");
+});
+
+closeSettingsBtn.addEventListener("click", () => {
+  settingsModal.classList.add("hidden");
+});
+
+//break duration
+const breakSelect = document.getElementById("break-duration");
+
+breakSelect.addEventListener("change", () => {
+  breakDuration = parseInt(breakSelect.value, 10);
+});

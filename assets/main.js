@@ -190,26 +190,51 @@ function playCurrentTask() {
 }
 
 //break starts
-function startBreak(durationInSeconds) {
-  let breakTime = durationInSeconds;
-  breakStartAudio.play();
+function startBreak(duration) {
+  let remaining = duration;
+  controlBtn.textContent = "▶ Play"; // Reset button text
+  isPaused = true; // Pause regular flow
+  controlBtn.disabled = false; // Allow user to play next manually if needed
+  resetBtn.disabled = false;
 
-  clearInterval(timerInterval);
-  timerInterval = setInterval(() => {
-    breakTime--;
+  // Show break timer
+  const breakDisplay = document.createElement("div");
+  breakDisplay.id = "break-countdown";
+  breakDisplay.style.color = "white";
+  breakDisplay.style.fontSize = "2rem";
+  breakDisplay.style.marginTop = "10px";
+  document.getElementById("timerbox").appendChild(breakDisplay);
 
-    if (breakTime === 5) {
-      breakEndAudio.play(); // 🔊 5 seconds before break ends
+  // Play break start voice
+  new Audio("assets/audio/break-start.mp3").play();
+
+  function updateBreakDisplay() {
+    const min = Math.floor(remaining / 60);
+    const sec = remaining % 60;
+    breakDisplay.textContent = `Break: ${String(min).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
+  }
+
+  updateBreakDisplay();
+
+  const breakInterval = setInterval(() => {
+    remaining--;
+    updateBreakDisplay();
+
+    if (remaining === 3) {
+      new Audio("assets/audio/break-end.mp3").play(); // Gentle voice before end
     }
 
-    if (breakTime <= 0) {
-      clearInterval(timerInterval);
-      timerInterval = null;
-      currentTaskIndex++;
-      playCurrentTask(); // Resume to next task
+    if (remaining <= 0) {
+      clearInterval(breakInterval);
+      breakDisplay.remove();
+
+      // 👉 Start the next task automatically
+      isPaused = false;
+      playCurrentTask();
     }
   }, 1000);
 }
+
 
 //break time
 function startBreakPeriod() {

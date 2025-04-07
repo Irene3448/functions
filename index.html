@@ -17,6 +17,7 @@
 
 		<!-- timer and start and pause buttons-->
 		<div id="timerbox">
+			<div id="break-timer" class="hidden">Break Time: 00:00</div>
 			<div id="timer-controls">
 				<button id="start-timer">▶ Play</button>
 			</div>
@@ -74,6 +75,8 @@
 			<div id="settings-content">
 			  <label for="break-duration">Choose break duration</label>
 			  <select id="break-duration">
+				<option value="10">10 seconds (test)</option>
+				<option value="300">5 minutes</option>
 				<option value="600" selected>10 minutes</option>
 				<option value="900">15 minutes</option>
 				<option value="1200">20 minutes</option>

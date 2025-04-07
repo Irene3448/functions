@@ -98,8 +98,8 @@ header{
 }
 
 #close-settings{
-	background-color: #cacaca;
-	color: black;
+	background-color: var(--button-color);
+	color: white;
 	padding: 7px 15px;
 	border-radius: 5px;
 }
@@ -123,6 +123,12 @@ header{
 	transition: background-color 0.3s, transform 0.2s;
 	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 	margin: 10px;
+}
+
+#break-timer{
+	font-size: 1.25rem;
+	color: white;
+	margin-bottom: 10px;
 }
 
 #start-timer {

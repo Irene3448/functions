@@ -27,12 +27,12 @@ header{
 	color: white;
 }
 
-#setting img{
+#break img{
 	width: 24px;
 	height: 24px;
 }
 
-#setting {
+#break {
 	background-color: rgba(255, 255, 255, 0.8);
 	border: none;
 	border-radius: 50%;
@@ -45,12 +45,12 @@ header{
 	justify-content: center;
 }
 
-#setting:hover {
+#break:hover {
 	background-color: rgba(255, 255, 255, 1);
 	transform: scale(1.05);
 }
 
-#settings-modal {
+#break-modal {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -63,7 +63,7 @@ header{
 	z-index: 2000;
 }
 
-#settings-content {
+#break-content {
 	background: white;
 	padding: 20px;
 	border-radius: 10px;
@@ -71,7 +71,7 @@ header{
 	line-height: 30px;
 }
 
-#settings-content select {
+#break-content select {
 	color: var(--font-color);
 	font-weight: 200;
 	border: solid 1px #999;
@@ -89,15 +89,15 @@ header{
 	cursor: pointer;
 }
 
-.settings-buttons {
+.break-buttons {
 	margin-top: 15px;
 }
 
-#settings-modal.hidden {
+#break-modal.hidden {
 	display: none;
 }
 
-#close-settings{
+#close-break{
 	background-color: var(--button-color);
 	color: white;
 	padding: 7px 15px;

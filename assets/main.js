@@ -6,9 +6,9 @@ const submitBtn = document.getElementById("submit");
 const taskList = document.getElementById("tasklist");
 const taskArea = document.getElementById("taskarea");
 const controlBtn = document.getElementById("start-timer");
-const settingsBtn = document.getElementById("setting");
-const settingsModal = document.getElementById("settings-modal");
-const closeSettingsBtn = document.getElementById("close-settings");
+const breakBtn = document.getElementById("break");
+const breakModal = document.getElementById("break-modal");
+const closeBreakBtn = document.getElementById("close-break");
 let resetBtn;
 let breakDuration = 600;
 
@@ -305,13 +305,13 @@ function createResetButton() {
 // Ensure correct state on load
 updateControlsVisibility();
 
-//setting modal
-settingsBtn.addEventListener("click", () => {
-  settingsModal.classList.remove("hidden");
+//break modal
+breakBtn.addEventListener("click", () => {
+  breakModal.classList.remove("hidden");
 });
 
-closeSettingsBtn.addEventListener("click", () => {
-  settingsModal.classList.add("hidden");
+closeBreakBtn.addEventListener("click", () => {
+  breakModal.classList.add("hidden");
 });
 
 //break duration

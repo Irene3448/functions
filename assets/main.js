@@ -64,7 +64,7 @@ cancelBtn.addEventListener("click", (e) => {
 submitBtn.addEventListener("click", (e) => {
   e.preventDefault();
 
-  const duration = parseInt(document.getElementById("taskduration").value);
+  const duration = parseFloat(document.getElementById("taskduration").value);
   const moodSelect = document.getElementById("mood");
   const moodValue = moodSelect.value;
   const moodText = moodSelect.options[moodSelect.selectedIndex].text;

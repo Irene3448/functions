@@ -46,8 +46,16 @@
 		<div id="inputtask" class="hidden">
 			<form id="taskform">
 				<label>
-					How long will this take? (minutes)
-					<input type="number" id="taskduration" min="1" placeholder="e.g. 45" required />
+					Set your focus time
+					<select id="taskduration" required>
+						<option value="" disabled selected hidden>--Please choose duration--</option>
+						<option value="0.33">20 seconds (for test)</option>
+						<option value="20">20 minutes</option>
+						<option value="30">30 minutes</option>
+						<option value="40">40 minutes</option>
+						<option value="45">45 minutes</option>
+						<option value="50">50 minutes</option>
+					</select>
 				</label>
 
 				<label>

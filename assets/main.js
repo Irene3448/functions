@@ -22,10 +22,6 @@ const musicSources = {
   whitenoise: "assets/audio/whitenoise.mp3"
 };
 
-//break audio
-const breakStartAudio = new Audio("assets/audio/break-start.mp3");
-const breakEndAudio = new Audio("assets/audio/break-end.mp3");
-
 // App state
 let taskQueue = [];
 let currentTaskIndex = 0;
@@ -163,6 +159,9 @@ function playCurrentTask() {
 
   updateDisplay();
 
+  isPaused = false;
+  controlBtn.textContent = isPaused ? "▶ Resume" : "⏸ Pause";
+
   if (musicSources[task.music]) {
     audioPlayer.src = musicSources[task.music];
     audioPlayer.loop = true;
@@ -214,8 +213,6 @@ function startBreak(duration) {
   breakDisplay.style.marginTop = "10px";
   document.getElementById("timerbox").appendChild(breakDisplay);
 
-  // Play break start voice
-  new Audio("assets/audio/break-start.mp3").play();
 
   function updateBreakDisplay() {
     const min = Math.floor(remaining / 60);
@@ -229,10 +226,6 @@ function startBreak(duration) {
     remaining--;
     updateBreakDisplay();
 
-    if (remaining === 3) {
-      new Audio("assets/audio/break-end.mp3").play(); // Gentle voice before end
-    }
-
     //break ends
     if (remaining <= 0) {
       clearInterval(breakInterval);
@@ -240,6 +233,7 @@ function startBreak(duration) {
 
       // 👉 Start the next task automatically
       isPaused = false;
+      controlBtn.textContent = "⏸ Pause";
       playCurrentTask();
     }
   }, 1000);

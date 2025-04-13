@@ -223,7 +223,7 @@ section{
 .task-item.active {
 	background: linear-gradient(135deg, #f5f0ff, #ffffff);
 	border: 2px solid var(--button-color);
-	box-shadow: 0 0 15px var(--button-color);
+	box-shadow: 0 0 20px var(--button-color);
 	animation: pulseGlow 1.5s ease-in-out infinite;
 }
 

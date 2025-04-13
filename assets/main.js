@@ -74,7 +74,11 @@ submitBtn.addEventListener("click", (e) => {
     return;
   }
 
-  const formattedDuration = `${String(duration).padStart(2, "0")}:00`;
+  const totalSeconds = Math.round(duration * 60);
+  const min = Math.floor(totalSeconds / 60);
+  const sec = totalSeconds % 60;
+  const formattedDuration = `${String(min).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
+  
   const task = { duration, music: moodValue };
 
   const li = document.createElement("li");
@@ -148,11 +152,11 @@ function playCurrentTask() {
   [...taskList.children].forEach(li => li.classList.remove("active"));
   taskLi.classList.add("active");
 
-  remainingSeconds = task.duration * 60;
+  remainingSeconds = Math.round(task.duration * 60);
 
   function updateDisplay() {
     const min = Math.floor(remainingSeconds / 60);
-    const sec = remainingSeconds % 60;
+    const sec = Math.floor(remainingSeconds % 60);
     const timeStr = `${String(min).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
     durationEl.textContent = timeStr;
   }
@@ -180,9 +184,7 @@ function playCurrentTask() {
         updateControlsVisibility();
         
         if (taskQueue.length > 0) {
-          const breakSelect = document.getElementById("break-duration");
-          const breakSeconds = parseInt(breakSelect.value) || 600; // default to 10 minutes
-          startBreak(breakSeconds);
+          startBreak(breakDuration);
         }
       }
     }
@@ -191,11 +193,18 @@ function playCurrentTask() {
 
 //break starts
 function startBreak(duration) {
+  // If break is skipped
+  if (duration === 0) {
+    isPaused = false;
+    playCurrentTask();
+    return;
+  }
+
   let remaining = duration;
-  controlBtn.textContent = "▶ Play"; // Reset button text
-  isPaused = true; // Pause regular flow
-  controlBtn.disabled = false; // Allow user to play next manually if needed
-  resetBtn.disabled = false;
+  isPaused = true;
+  controlBtn.textContent = "▶ Play";
+  controlBtn.disabled = false;
+  if (resetBtn) resetBtn.disabled = false;
 
   // Show break timer
   const breakDisplay = document.createElement("div");
@@ -210,7 +219,7 @@ function startBreak(duration) {
 
   function updateBreakDisplay() {
     const min = Math.floor(remaining / 60);
-    const sec = remaining % 60;
+    const sec = Math.floor(remaining % 60);
     breakDisplay.textContent = `Break: ${String(min).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
   }
 
@@ -224,6 +233,7 @@ function startBreak(duration) {
       new Audio("assets/audio/break-end.mp3").play(); // Gentle voice before end
     }
 
+    //break ends
     if (remaining <= 0) {
       clearInterval(breakInterval);
       breakDisplay.remove();
@@ -235,34 +245,6 @@ function startBreak(duration) {
   }, 1000);
 }
 
-
-//break time
-function startBreakPeriod() {
-  const restStartAudio = new Audio("assets/audio/rest-start.mp3");
-  const restEndAudio = new Audio("assets/audio/rest-end.mp3");
-
-  restStartAudio.play();
-
-  let breakSeconds = breakDuration;
-  clearInterval(timerInterval);
-
-  timerInterval = setInterval(() => {
-    breakSeconds--;
-
-    // Optionally update UI with break countdown
-    if (breakSeconds <= 5 && breakSeconds > 0) {
-      // maybe flash something like "Get ready..."
-    }
-
-    if (breakSeconds <= 0) {
-      clearInterval(timerInterval);
-      restEndAudio.play();
-      isPaused = true;
-      controlBtn.textContent = "▶ Play";
-      playCurrentTask(); // load the next task, but keep it paused
-    }
-  }, 1000);
-}
 
 // Toggle play/pause
 controlBtn.addEventListener("click", () => {

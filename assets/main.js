@@ -151,6 +151,7 @@ function attachTaskButtons(li, index) {
 // Play current task
 function playCurrentTask() {
   if (currentTaskIndex >= taskQueue.length) {
+    updateBackground("default");
     updateControlsVisibility();
     return;
   }
@@ -195,6 +196,11 @@ function playCurrentTask() {
         taskQueue.splice(currentTaskIndex, 1);
         audioPlayer.pause();
         new Audio("assets/audio/ding.mp3").play();
+
+        if (currentTaskIndex >= taskQueue.length) {
+          updateBackground("default"); // 👈 This will now run properly
+        }
+        
         updateControlsVisibility();
         
         if (taskQueue.length > 0) {
@@ -212,7 +218,6 @@ function playCurrentTask() {
 
 //break starts
 function startBreak(duration) {
-  // Check if user hasn't selected a break duration
   if (breakDuration === null) {
     alert("Please select your break duration first.");
     breakModal.classList.remove("hidden");
@@ -256,8 +261,13 @@ function startBreak(duration) {
       clearInterval(breakInterval);
       breakDisplay.remove();
       isPaused = false;
+
+    if (taskQueue.length > 0) {
       controlBtn.textContent = "⏸ Pause";
       playCurrentTask();
+    } else {
+      updateBackground("default"); // ✅ fallback in case no more tasks
+     }
     }
   }, 1000);
 }

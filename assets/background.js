@@ -12,7 +12,7 @@ function updateBackground(mood) {
 	};
   
 	if (bgImage) {
-	  bgImage.src = "assets/images/" + (moodImages[mood] || moodImages.default);
+	  const selectedImage = moodImages[mood] || moodImages.default;
+	  bgImage.src = `assets/images/${selectedImage}`;
 	}
   }
-  

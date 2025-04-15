@@ -10,7 +10,7 @@ const breakBtn = document.getElementById("break");
 const breakModal = document.getElementById("break-modal");
 const closeBreakBtn = document.getElementById("close-break");
 let resetBtn;
-let breakDuration = 600;
+let breakDuration = null;
 
 // Audio setup
 const audioPlayer = new Audio();
@@ -43,7 +43,11 @@ function updateControlsVisibility() {
     controlBtn.textContent = isPaused ? "▶ Play" : "⏸ Pause";
     if (resetBtn) resetBtn.style.display = "inline-block";
   }
+
+  // 👇 Add this here
+  controlBtn.disabled = (breakDuration === null);
 }
+
 
 // Show task input form
 addBtn.addEventListener("click", () => {
@@ -96,6 +100,12 @@ submitBtn.addEventListener("click", (e) => {
   updateControlsVisibility();
 
   if (!resetBtn) createResetButton();
+
+  // 🛑 Check if breakDuration is not selected yet
+  if (breakDuration === null) {
+    alert("Before starting, please choose your break duration.");
+    breakModal.classList.remove("hidden");
+  }
 });
 
 // Attach delete behavior
@@ -131,6 +141,10 @@ function attachTaskButtons(li, index) {
     }
 
     updateControlsVisibility();
+
+    if (taskQueue.length === 0) {
+      updateBackground("default");
+    }
   });
 }
 
@@ -142,6 +156,7 @@ function playCurrentTask() {
   }
 
   const task = taskQueue[currentTaskIndex];
+  updateBackground(task.music);
   const taskLi = taskList.children[currentTaskIndex];
   const durationEl = taskLi.querySelector(".task-duration");
 
@@ -183,7 +198,12 @@ function playCurrentTask() {
         updateControlsVisibility();
         
         if (taskQueue.length > 0) {
-          startBreak(breakDuration);
+          if (breakDuration !== null) {
+            startBreak(breakDuration);
+          } else {
+            // Show break modal if no break duration has been selected
+            document.getElementById("break-modal").classList.remove("hidden");
+          }
         }
       }
     }
@@ -192,7 +212,14 @@ function playCurrentTask() {
 
 //break starts
 function startBreak(duration) {
-  // If break is skipped
+  // Check if user hasn't selected a break duration
+  if (breakDuration === null) {
+    alert("Please select your break duration first.");
+    breakModal.classList.remove("hidden");
+    return;
+  }
+
+  // Check if user selected "Skip break"
   if (duration === 0) {
     isPaused = false;
     playCurrentTask();
@@ -213,7 +240,6 @@ function startBreak(duration) {
   breakDisplay.style.marginTop = "10px";
   document.getElementById("timerbox").appendChild(breakDisplay);
 
-
   function updateBreakDisplay() {
     const min = Math.floor(remaining / 60);
     const sec = Math.floor(remaining % 60);
@@ -226,12 +252,9 @@ function startBreak(duration) {
     remaining--;
     updateBreakDisplay();
 
-    //break ends
     if (remaining <= 0) {
       clearInterval(breakInterval);
       breakDisplay.remove();
-
-      // 👉 Start the next task automatically
       isPaused = false;
       controlBtn.textContent = "⏸ Pause";
       playCurrentTask();
@@ -273,10 +296,27 @@ function createResetButton() {
     currentTaskIndex = 0;
     audioPlayer.pause();
     controlBtn.textContent = "▶ Play";
-    [...taskList.children].forEach(li => li.classList.remove("active"));
+
+    // 🔄 Remove all tasks visually
+    while (taskList.firstChild) {
+      taskList.removeChild(taskList.firstChild);
+    }
+
+    // 🧼 Clear task queue
+    taskQueue = [];
+
+    // 🔁 Reset break duration selection to default (10 minutes)
+    breakSelect.value = "10"; // or whatever your default is
+    breakDuration = 10;
+
+    // ✨ Reset background to default
+    updateBackground("default");
+
     updateControlsVisibility();
   });
 }
+
+
 
 // Ensure correct state on load
 updateControlsVisibility();
@@ -295,4 +335,8 @@ const breakSelect = document.getElementById("break-duration");
 
 breakSelect.addEventListener("change", () => {
   breakDuration = parseInt(breakSelect.value, 10);
+  breakModal.classList.add("hidden");
+
+  // 👇 Enable Play button now that a break has been selected
+  controlBtn.disabled = false;
 });

@@ -5,8 +5,8 @@
 		<title>Typography and Interaction: Functions</title>
 		<link href="assets/reset.css" rel="stylesheet">
 		<link href="assets/style.css" rel="stylesheet">
+		<script defer src="assets/background.js"></script>
 		<script defer src="assets/main.js"></script>
-		<script defer src="assets/audio.js"></script>
 	</head>
 
 	<body>
@@ -82,14 +82,14 @@
 		<div id="break-modal" class="hidden">
 			<div id="break-content">
 			  <label for="break-duration">Choose break duration</label>
-			  <select id="break-duration">
+			  <select id="break-duration" required>
+				<option value="" disabled selected hidden>--Choose break duration--</option>
 				<option value="0">Skip break</option>
 				<option value="10">10 seconds (test)</option>
 				<option value="300">5 minutes</option>
-				<option value="600" selected>10 minutes</option>
+				<option value="600">10 minutes</option>
 				<option value="900">15 minutes</option>
 				<option value="1200">20 minutes</option>
-				<option value="1800">30 minutes</option>
 			  </select>
 
 			  <div class="break-buttons">

@@ -178,6 +178,29 @@ header{
 	z-index: -1;
 }
 
+/*background style based on mood*/
+body.cozyjazz{
+	background-image: url('assets/images/cozyjazz.jpg');
+	background-size: cover;
+	background-position: center;
+}
+
+body.rainyday{
+	background-image: url('assets/images/rainyday.jpg');
+}
+
+body.lofi{
+	background-image: url('assets/images/lofi.jpg');
+}
+
+body.stressfree{
+	background-image: url('assets/images/stressfree.jpg');
+}
+
+body.whitenoise{
+	background-image: url('assets/images/whitenoise.jpg');
+}
+
 section{
 	padding: 20px;
 }

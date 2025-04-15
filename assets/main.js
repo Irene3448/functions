@@ -296,22 +296,29 @@ function createResetButton() {
     currentTaskIndex = 0;
     audioPlayer.pause();
     controlBtn.textContent = "▶ Play";
-
+  
     // 🔄 Remove all tasks visually
     while (taskList.firstChild) {
       taskList.removeChild(taskList.firstChild);
     }
-
+  
     // 🧼 Clear task queue
     taskQueue = [];
-
-    // 🔁 Reset break duration selection to default (10 minutes)
-    breakSelect.value = "10"; // or whatever your default is
-    breakDuration = 10;
-
-    // ✨ Reset background to default
+  
+    // ❌ Remove break countdown if it's showing
+    const breakDisplay = document.getElementById("break-countdown");
+    if (breakDisplay) {
+      breakDisplay.remove();
+    }
+  
+    // 🔁 Reset break duration dropdown
+    breakSelect.value = "";
+    breakDuration = null;
+    controlBtn.disabled = true;
+  
+    // ✨ Reset background
     updateBackground("default");
-
+  
     updateControlsVisibility();
   });
 }

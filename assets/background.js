@@ -1,15 +1,18 @@
 function updateBackground(mood) {
 	const bgImage = document.querySelector(".background-image img");
+	const isDesktop = window.innerWidth >= 768;
+  
 	const moodImages = {
-	  cozyjazz: "assets/images/cozyjazz.jpg",
-	  rainyday: "assets/images/rainyday.jpg",
-	  lofi: "assets/images/lofi.jpg",
-	  stressfree: "assets/images/stressfree.jpg",
-	  whitenoise: "assets/images/whitenoise.jpg",
-	  default: "assets/images/default-img.jpg"
+	  cozyjazz: isDesktop ? "cozyjazz-bg.jpg" : "cozyjazz.jpg",
+	  rainyday: isDesktop ? "rainyday-bg.jpg" : "rainyday.jpg",
+	  lofi: isDesktop ? "lofi-bg.jpg" : "lofi.jpg",
+	  stressfree: isDesktop ? "stressfree-bg.jpg" : "stressfree.jpg",
+	  whitenoise: isDesktop ? "whitenoise-bg.jpg" : "whitenoise.jpg",
+	  default: "default-img.jpg"
 	};
   
 	if (bgImage) {
-	  bgImage.src = moodImages[mood] || moodImages.default;
+	  bgImage.src = "assets/images/" + (moodImages[mood] || moodImages.default);
 	}
   }
+  

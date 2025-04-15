@@ -160,6 +160,7 @@ header{
 	height: 100%;
 	z-index: -2;
 	overflow: hidden;
+	/* display:none; */
 }
 
 .background-image img {
@@ -200,6 +201,7 @@ body.stressfree{
 body.whitenoise{
 	background-image: url('assets/images/whitenoise.jpg');
 }
+
 
 section{
 	padding: 20px;
@@ -401,4 +403,28 @@ section{
 
 .hidden{
 	display:none;
+}
+
+
+
+@media (min-width: 768px) {
+	body.cozyjazz{
+		background-image: url('assets/images/cozyjazz-bg.jpg');
+	}
+	
+	body.rainyday{
+		background-image: url('assets/images/rainyday-bg.jpg');
+	}
+	
+	body.lofi{
+		background-image: url('assets/images/lofi-bg.jpg');
+	}
+	
+	body.stressfree{
+		background-image: url('assets/images/stressfree-bg.jpg');
+	}
+	
+	body.whitenoise{
+		background-image: url('assets/images/whitenoise-bg.jpg');
+	}
 }

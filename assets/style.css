@@ -168,7 +168,6 @@ h1{
 	height: 100%;
 	z-index: -2;
 	overflow: hidden;
-	/* display:none; */
 }
 
 .background-image img {
@@ -177,15 +176,6 @@ h1{
 	object-fit: cover;
 }
 
-.overlay {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0, 0, 0, 0.4);
-	z-index: -1;
-}
 
 /*background style based on mood*/
 body.cozyjazz{
@@ -251,13 +241,27 @@ section{
 	position: relative;
 	font-family: var(--primary-font-style);
 	box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+	transition: all 0.3s ease;
 }
 
 .task-item.active {
-	background: linear-gradient(135deg, #f5f0ff, #ffffff);
+	background-color: #d5c3ff !important;
+	color: white;
 	border: 2px solid var(--button-color);
 	box-shadow: 0 0 20px var(--button-color);
 	animation: pulseGlow 1.5s ease-in-out infinite;
+	transform: scale(1.10);
+	margin-bottom: 5px;
+}
+
+.task-item.active .task-duration{
+	font-size: 2rem;
+	font-weight: bold;
+}
+
+.task-item.active .task-mood{
+	font-size: 1rem;
 }
 
 @keyframes pulseGlow {
@@ -292,7 +296,8 @@ section{
 }
 
 .delete-btn {
-	background: var(--button-color);
+	/* background: var(--button-color); */
+	border: 1.5px solid var(--button-color);
 	color:white;
 	cursor: pointer;
 	font-size: 1rem;
@@ -301,9 +306,7 @@ section{
 }
 
 .delete-btn:hover {
-	background-color: white;
-	color: var(--button-color);
-	border: solid 1px var(--button-color);
+	background-color: var(--button-color);
 }
 
 #addtask-button{

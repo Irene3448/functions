@@ -12,7 +12,7 @@ const closeBreakBtn = document.getElementById("close-break");
 let resetBtn;
 let breakDuration = null;
 
-// Audio setup
+// Audio setup: background music for each mood
 const audioPlayer = new Audio();
 const musicSources = {
   cozyjazz: "assets/audio/cozyjazz.mp3",
@@ -22,14 +22,14 @@ const musicSources = {
   whitenoise: "assets/audio/whitenoise.mp3"
 };
 
-// App state
+// App state: These are variables to remember
 let taskQueue = [];
 let currentTaskIndex = 0;
 let timerInterval = null;
 let remainingSeconds = 0;
 let isPaused = true;
 
-// Hide controls initially
+// Hide controls 
 controlBtn.style.display = "none";
 
 // Show/hide play/reset buttons
@@ -43,8 +43,6 @@ function updateControlsVisibility() {
     controlBtn.textContent = isPaused ? "▶ Play" : "⏸ Pause";
     if (resetBtn) resetBtn.style.display = "inline-block";
   }
-
-  // 👇 Add this here
   controlBtn.disabled = (breakDuration === null);
 }
 
@@ -101,14 +99,14 @@ submitBtn.addEventListener("click", (e) => {
 
   if (!resetBtn) createResetButton();
 
-  // 🛑 Check if breakDuration is not selected yet
+  // Alert if breakDuration is not selected yet
   if (breakDuration === null) {
     alert("Before starting, please choose your break duration.");
     breakModal.classList.remove("hidden");
   }
 });
 
-// Attach delete behavior
+// Delete button to each task
 function attachTaskButtons(li, index) {
   li.querySelector(".delete-btn").addEventListener("click", () => {
     const isCurrentTask = li === taskList.children[currentTaskIndex];
@@ -198,7 +196,7 @@ function playCurrentTask() {
         new Audio("assets/audio/ding.mp3").play();
 
         if (currentTaskIndex >= taskQueue.length) {
-          updateBackground("default"); // 👈 This will now run properly
+          updateBackground("default");
         }
         
         updateControlsVisibility();
@@ -224,7 +222,7 @@ function startBreak(duration) {
     return;
   }
 
-  // Check if user selected "Skip break"
+  // Skip break
   if (duration === 0) {
     isPaused = false;
     playCurrentTask();
@@ -266,14 +264,14 @@ function startBreak(duration) {
       controlBtn.textContent = "⏸ Pause";
       playCurrentTask();
     } else {
-      updateBackground("default"); // ✅ fallback in case no more tasks
+      updateBackground("default");
      }
     }
   }, 1000);
 }
 
 
-// Toggle play/pause
+// Toggle play/pause button
 controlBtn.addEventListener("click", () => {
   if (taskQueue.length === 0) return;
 
@@ -307,38 +305,36 @@ function createResetButton() {
     audioPlayer.pause();
     controlBtn.textContent = "▶ Play";
   
-    // 🔄 Remove all tasks visually
+    //Remove all tasks visually
     while (taskList.firstChild) {
       taskList.removeChild(taskList.firstChild);
     }
   
-    // 🧼 Clear task queue
+    //Clear task queue
     taskQueue = [];
   
-    // ❌ Remove break countdown if it's showing
+    //Remove break countdown if it's showing
     const breakDisplay = document.getElementById("break-countdown");
     if (breakDisplay) {
       breakDisplay.remove();
     }
   
-    // 🔁 Reset break duration dropdown
+    // Reset break duration dropdown
     breakSelect.value = "";
     breakDuration = null;
     controlBtn.disabled = true;
   
-    // ✨ Reset background
+    //Reset background
     updateBackground("default");
   
     updateControlsVisibility();
   });
 }
 
-
-
-// Ensure correct state on load
+// buttons are hidden properly when the app first opens
 updateControlsVisibility();
 
-//break modal
+//Open and close break modal
 breakBtn.addEventListener("click", () => {
   breakModal.classList.remove("hidden");
 });
@@ -350,10 +346,11 @@ closeBreakBtn.addEventListener("click", () => {
 //break duration
 const breakSelect = document.getElementById("break-duration");
 
+//saves the user's break time and hides the modal
 breakSelect.addEventListener("change", () => {
   breakDuration = parseInt(breakSelect.value, 10);
   breakModal.classList.add("hidden");
 
-  // 👇 Enable Play button now that a break has been selected
+  // Enable Play button now that a break has been selected
   controlBtn.disabled = false;
 });

@@ -101,7 +101,6 @@ submitBtn.addEventListener("click", (e) => {
 
   // Alert if breakDuration is not selected yet
   if (breakDuration === null) {
-    alert("Before starting, please choose your break duration.");
     breakModal.classList.remove("hidden");
   }
 });

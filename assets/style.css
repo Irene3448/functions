@@ -246,7 +246,7 @@ section{
 }
 
 .task-item.active {
-	background-color: #d5c3ff !important;
+	background-color: #dfd1ff !important;
 	color: white;
 	border: 2px solid var(--button-color);
 	box-shadow: 0 0 20px var(--button-color);

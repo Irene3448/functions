@@ -1,3 +1,4 @@
+//changes the background images based on the mood selection
 function updateBackground(mood) {
 	const bgImage = document.querySelector(".background-image img");
 	const isDesktop = window.innerWidth >= 768;

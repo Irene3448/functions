@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Funnel+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 
+@import url('https://fonts.googleapis.com/css2?family=Playwrite+NO+Guides&display=swap');
+
 :root{
+	--title-font-style: 'Playwrite NO Guides';
 	--primary-font-style: 'Funnel Sans';
 	
 	--button-color: #4C00FF;
@@ -25,6 +28,11 @@ header{
 	align-items: center;
 	padding: 20px 18px;
 	color: white;
+}
+
+h1{
+	font-family: var(--title-font-style);
+	font-weight: 600;
 }
 
 #break img{
@@ -227,7 +235,7 @@ section{
 	color: var(--button-color);
 	border-radius: 30px;
 	padding: 16px 22px;
-	min-width: 350px;
+	min-width: 300px;
 	font-size: 1rem;
 	cursor: pointer;
 	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
@@ -240,7 +248,6 @@ section{
 	color: var(--button-color);
 	border-radius: 100px;
 	padding: 12px 16px;
-	width: 200px;
 	position: relative;
 	font-family: var(--primary-font-style);
 	box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -318,7 +325,7 @@ section{
 	color: white;
 	background-color: rgba(0, 0, 0, 0.4);
 	padding: 12px 50px;
-	min-width: 350px;
+	min-width: 300px;
 	border-radius: 30px;
 	display: flex;
 	align-items: center;
@@ -408,6 +415,11 @@ section{
 
 
 @media (min-width: 768px) {
+
+	header{
+		padding: 20px 54px;
+	}
+
 	body.cozyjazz{
 		background-image: url('assets/images/cozyjazz-bg.jpg');
 	}

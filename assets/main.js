@@ -10,7 +10,7 @@ const breakBtn = document.getElementById("break");
 const breakModal = document.getElementById("break-modal");
 const closeBreakBtn = document.getElementById("close-break");
 let resetBtn;
-let breakDuration = null;
+let breakDuration = 300;
 
 // Audio setup: background music for each mood
 const audioPlayer = new Audio();
@@ -99,10 +99,6 @@ submitBtn.addEventListener("click", (e) => {
 
   if (!resetBtn) createResetButton();
 
-  // Alert if breakDuration is not selected yet
-  if (breakDuration === null) {
-    breakModal.classList.remove("hidden");
-  }
 });
 
 // Delete button to each task
@@ -148,7 +144,6 @@ function attachTaskButtons(li, index) {
 // Play current task
 function playCurrentTask() {
   if (currentTaskIndex >= taskQueue.length) {
-    updateBackground("default");
     updateControlsVisibility();
     return;
   }
@@ -193,10 +188,6 @@ function playCurrentTask() {
         taskQueue.splice(currentTaskIndex, 1);
         audioPlayer.pause();
         new Audio("assets/audio/ding.mp3").play();
-
-        if (currentTaskIndex >= taskQueue.length) {
-          updateBackground("default");
-        }
         
         updateControlsVisibility();
         
@@ -215,11 +206,6 @@ function playCurrentTask() {
 
 //break starts
 function startBreak(duration) {
-  if (breakDuration === null) {
-    alert("Please select your break duration first.");
-    breakModal.classList.remove("hidden");
-    return;
-  }
 
   // Skip break
   if (duration === 0) {
@@ -263,7 +249,6 @@ function startBreak(duration) {
       controlBtn.textContent = "⏸ Pause";
       playCurrentTask();
     } else {
-      updateBackground("default");
      }
     }
   }, 1000);

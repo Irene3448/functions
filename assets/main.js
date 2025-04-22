@@ -43,7 +43,7 @@ function updateControlsVisibility() {
     controlBtn.textContent = isPaused ? "▶ Play" : "⏸ Pause";
     if (resetBtn) resetBtn.style.display = "inline-block";
   }
-  controlBtn.disabled = (breakDuration === null);
+  controlBtn.disabled = (typeof breakDuration === 'undefined');
 }
 
 
@@ -95,6 +95,8 @@ submitBtn.addEventListener("click", (e) => {
 
   document.getElementById("taskform").reset();
   inputForm.style.display = "none";
+  isPaused=true;
+  controlBtn.textContent ="▶ Play";
   updateControlsVisibility();
 
   if (!resetBtn) createResetButton();
@@ -305,7 +307,7 @@ function createResetButton() {
   
     // Reset break duration dropdown
     breakSelect.value = "";
-    breakDuration = null;
+    breakDuration = 300;
     controlBtn.disabled = true;
   
     //Reset background

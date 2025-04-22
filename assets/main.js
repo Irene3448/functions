@@ -285,11 +285,15 @@ function createResetButton() {
   document.getElementById("timer-controls").appendChild(resetBtn);
 
   resetBtn.addEventListener("click", () => {
-    clearInterval(timerInterval);
-    timerInterval = null;
-    isPaused = true;
+    const confirmReset = confirm("Are you sure you want to remove all the tasks?");
+    if (!confirmReset) return;
+
+    // clearInterval(timerInterval);
+    // timerInterval = null;
+    // isPaused = true;
+    resetTimerState();
     currentTaskIndex = 0;
-    audioPlayer.pause();
+    // audioPlayer.pause();
     controlBtn.textContent = "▶ Play";
   
     //Remove all tasks visually
@@ -309,11 +313,10 @@ function createResetButton() {
     // Reset break duration dropdown
     breakSelect.value = "";
     breakDuration = 300;
-    controlBtn.disabled = true;
+    // controlBtn.disabled = true;
   
     //Reset background
     updateBackground("default");
-  
     updateControlsVisibility();
   });
 }

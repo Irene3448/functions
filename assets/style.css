@@ -495,7 +495,8 @@ section{
 	position: fixed;
 	bottom: 80px;
 	left: 50%;
-	min-width: 225px;
+	min-width: 230px;
+	text-align: center;
 	transform: translateX(-50%);
 	padding: 14px 28px;
 	font-size: 1.2rem;

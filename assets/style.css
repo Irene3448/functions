@@ -114,6 +114,13 @@ header button{
 	border-radius: 5px;
 }
 
+#break-countdown{
+	background-color: rgba(0,0,0,0.5);
+	border-radius: 30px;
+	padding: 20px;
+	margin-inline: 35px;
+}
+
 /* timer style */
 #timerbox {
 	text-align: center;
@@ -546,9 +553,12 @@ section{
 		margin-left:-50px;
 	}
 	
-
 	header{
 		padding: 20px 54px;
+	}
+
+	#break-countdown{
+		margin-inline: 568px;
 	}
 
 	/* background images */

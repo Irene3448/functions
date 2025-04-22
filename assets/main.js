@@ -219,7 +219,7 @@ function startBreak(duration) {
   let remaining = duration;
   isPaused = true;
   controlBtn.textContent = "▶ Play";
-  controlBtn.disabled = false;
+  controlBtn.disabled = true; //disable during break
   if (resetBtn) resetBtn.disabled = false;
 
   // Show break timer
@@ -246,6 +246,7 @@ function startBreak(duration) {
       clearInterval(breakInterval);
       breakDisplay.remove();
       isPaused = false;
+      controlBtn.disabled = false; //re-enable after break
 
     if (taskQueue.length > 0) {
       controlBtn.textContent = "⏸ Pause";

@@ -38,16 +38,15 @@ h1{
 	z-index: 4000;
 }
 
-#break img{
-	width: 24px;
-	height: 24px;
+header button{
+	font-size: 1.7rem;
 }
 
 #break {
 	background-color: rgba(255, 255, 255, 0.8);
 	border: none;
 	border-radius: 50%;
-	padding: 10px;
+	padding: 5px 10px;
 	cursor: pointer;
 	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 	transition: background-color 0.3s, transform 0.2s;
@@ -460,10 +459,8 @@ section{
 }
 
 #straight-arrow{
-	margin-top: 60px;
-	margin-bottom: 10px;
-	margin-left: 30px;
 	height: 200px;
+	margin: 60px 15px 10px 30px;
 }
 
 #addtask-guide {
@@ -480,7 +477,7 @@ section{
 #big-arrow{
 	width: 80px;
 	height: 150px;
-	margin-left: 120px;
+	margin-left: 110px;
 	rotate: calc(15deg);
 }
 
@@ -488,7 +485,6 @@ section{
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
-	border-radius: 8px;
 	min-width: 210px;
 	margin-top: -35px;
 	margin-left:-10px;
@@ -499,9 +495,10 @@ section{
 	position: fixed;
 	bottom: 80px;
 	left: 50%;
+	min-width: 225px;
 	transform: translateX(-50%);
 	padding: 14px 28px;
-	font-size: 1rem;
+	font-size: 1.2rem;
 	font-weight: bold;
 	border: none;
 	border-radius: 50px;
@@ -536,28 +533,15 @@ section{
 
 	.button-guide{
 		margin-left: 620px;
-		margin-right: 40px;
+		margin-right: 60px;
 		gap: 420px;
 	}
 	
 	#addtask-guide {
 		margin-top: 50px;
-		max-width: 160px;
-	}
-	
-	#big-arrow{
-		width: 80px;
-		height: 150px;
-		margin-left: 120px;
-		rotate: calc(15deg);
 	}
 	
 	#breaktimer-guide{
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-start;
-		border-radius: 8px;
-		min-width: 210px;
 		margin-top: -10px;
 		margin-left:-50px;
 	}

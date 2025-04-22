@@ -74,7 +74,7 @@ header button{
 }
 
 #break-content {
-	background: white;
+	background: linear-gradient(to bottom, rgb(255, 214, 149), rgb(186, 226, 254));
 	padding: 20px;
 	border-radius: 10px;
 	max-width: 300px;
@@ -217,9 +217,8 @@ section{
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
-	padding: 0;
-	margin: 0;
 	list-style: none;
+	justify-content: center;
 }
 
 #tasklist li{
@@ -363,7 +362,7 @@ section{
 }
 
 #taskform{
-	background: white;
+	background: linear-gradient(to bottom, rgb(255, 214, 149), rgb(186, 226, 254));
 	padding: 20px;
 	border-radius: 10px;
 	max-width: 300px;
@@ -400,7 +399,7 @@ section{
 }
 
 #cancel{
-	background-color: #cacaca;
+	background-color: white;
 	color: black;
 	padding: 12px 15px;
 	border-radius: 5px;

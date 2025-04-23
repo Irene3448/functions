@@ -9,10 +9,11 @@ const controlBtn = document.getElementById("start-timer");
 const breakBtn = document.getElementById("break");
 const breakModal = document.getElementById("break-modal");
 const closeBreakBtn = document.getElementById("close-break");
-let resetBtn;
-let breakDuration = 300;
 
-// Audio setup: background music for each mood
+let resetBtn; 
+let breakDuration = 300; //default 5min break
+
+// background music for each mood
 const audioPlayer = new Audio();
 const musicSources = {
   cozyjazz: "assets/audio/cozyjazz.mp3",
@@ -22,14 +23,13 @@ const musicSources = {
   whitenoise: "assets/audio/whitenoise.mp3"
 };
 
-// App state: These are variables to remember
-let taskQueue = [];
-let currentTaskIndex = 0;
-let timerInterval = null;
+let taskQueue = []; 
+let currentTaskIndex = 0; 
+let timerInterval = null; 
 let remainingSeconds = 0;
 let isPaused = true;
 
-// Hide controls 
+// Hide control/play button if no tasks yet
 controlBtn.style.display = "none";
 
 // Show/hide play/reset buttons
@@ -48,6 +48,7 @@ function updateControlsVisibility() {
 
 
 // Show task input form
+//learned addEventListener from MDN: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
 addBtn.addEventListener("click", () => {
   inputForm.style.display = "flex";
 });
@@ -67,6 +68,7 @@ submitBtn.addEventListener("click", (e) => {
   const moodValue = moodSelect.value;
   const moodText = moodSelect.options[moodSelect.selectedIndex].text;
 
+  //if no time or mood is selected, show alert
   if (!duration || !moodValue) {
     alert("Please fill out both duration and mood.");
     return;
@@ -75,10 +77,14 @@ submitBtn.addEventListener("click", (e) => {
   const totalSeconds = Math.round(duration * 60);
   const min = Math.floor(totalSeconds / 60);
   const sec = totalSeconds % 60;
+  //I learned padStart from
+  //MDN: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/padStart
   const formattedDuration = `${String(min).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
   
+  //create the task object
   const task = { duration, music: moodValue };
 
+  //creat a new list item for the task
   const li = document.createElement("li");
   li.classList.add("task-item");
   li.innerHTML = `
@@ -88,18 +94,18 @@ submitBtn.addEventListener("click", (e) => {
       <button class="delete-btn">🗑️</button>
     </div>
   `;
-  taskList.appendChild(li);
-  taskQueue.push(task);
+  taskList.appendChild(li); //add to task list on page
+  taskQueue.push(task); 
 
-  attachTaskButtons(li, taskQueue.length - 1);
+  attachTaskButtons(li, taskQueue.length - 1); //add delete function
 
-  document.getElementById("taskform").reset();
-  inputForm.style.display = "none";
+  document.getElementById("taskform").reset();//clear form
+  inputForm.style.display = "none";//hide form
   isPaused=true;
   controlBtn.textContent ="▶ Play";
-  updateControlsVisibility();
+  updateControlsVisibility(); //show play/reset
 
-  if (!resetBtn) createResetButton();
+  if (!resetBtn) createResetButton(); //creat reset button if not made yet
 
 });
 
@@ -108,14 +114,19 @@ function attachTaskButtons(li, index) {
   li.querySelector(".delete-btn").addEventListener("click", () => {
     const isCurrentTask = li === taskList.children[currentTaskIndex];
 
+    //don't allow delete if task is playing
     if (isCurrentTask && !isPaused) {
       alert("⏸ Pause the task before deleting.");
       return;
     }
 
+    //remove from page and queue
     taskList.removeChild(li);
+    //I needed to remove a task from the array
+    //used MDN:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
     taskQueue.splice(index, 1);
 
+    //if current task is deleted, stop timer and music
     if (isCurrentTask) {
       clearInterval(timerInterval);
       timerInterval = null;
@@ -124,6 +135,7 @@ function attachTaskButtons(li, index) {
       audioPlayer.currentTime = 0;
       controlBtn.textContent = "▶ Play";
 
+      //remove active style
       [...taskList.children].forEach(li => li.classList.remove("active"));
 
       if (currentTaskIndex >= taskQueue.length) {
@@ -172,13 +184,18 @@ function playCurrentTask() {
   isPaused = false;
   controlBtn.textContent = isPaused ? "▶ Resume" : "⏸ Pause";
 
+  //load any play the mood music
   if (musicSources[task.music]) {
     audioPlayer.src = musicSources[task.music];
     audioPlayer.loop = true;
+    //wanted to play background music for each task
     if (!isPaused) audioPlayer.play().catch(err => console.log("Audio error:", err));
   }
 
+  //countdown starts
   clearInterval(timerInterval);
+  //wanted to run a countdown every second
+  //sources from MDN: https://developer.mozilla.org/en-US/docs/Web/API/setInterval
   timerInterval = setInterval(() => {
     if (!isPaused) {
       remainingSeconds--;
@@ -186,10 +203,10 @@ function playCurrentTask() {
       if (remainingSeconds <= 0) {
         clearInterval(timerInterval);
         timerInterval = null;
-        taskList.removeChild(taskLi);
-        taskQueue.splice(currentTaskIndex, 1);
+        taskList.removeChild(taskLi); //remove from page
+        taskQueue.splice(currentTaskIndex, 1); //remove from list
         audioPlayer.pause();
-        new Audio("assets/audio/ding.mp3").play();
+        new Audio("assets/audio/ding.mp3").play(); //bell sound
         
         updateControlsVisibility();
         
@@ -208,7 +225,6 @@ function playCurrentTask() {
 
 //break starts
 function startBreak(duration) {
-
   // Skip break
   if (duration === 0) {
     isPaused = false;
@@ -219,7 +235,7 @@ function startBreak(duration) {
   let remaining = duration;
   isPaused = true;
   controlBtn.textContent = "▶ Play";
-  controlBtn.disabled = true; //disable during break
+  controlBtn.disabled = true; //disable play button during break
   if (resetBtn) resetBtn.disabled = false;
 
   // Show break timer
@@ -275,6 +291,7 @@ controlBtn.addEventListener("click", () => {
     audioPlayer.pause();
   }
 });
+
 
 // Reset button
 function createResetButton() {
@@ -344,3 +361,5 @@ breakSelect.addEventListener("change", () => {
   // Enable Play button now that a break has been selected
   controlBtn.disabled = false;
 });
+
+// MDN was used as a reference and ChatGPT was used to help with debugging and code explanations

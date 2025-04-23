@@ -479,7 +479,8 @@ section{
 }
 
 #straight-arrow{
-	height: 200px;
+	/* height: 200px; */
+	height: 20vh;
 	margin: 60px 15px 10px 30px;
 }
 
@@ -489,16 +490,20 @@ section{
 	justify-content: center;
 	top: 0px;
 	left:0;
-	margin-top: 30px;
+	/* margin-top: 30px; */
+	margin-top: 4vh;
 	max-width: 160px;
 	text-align: center;
 }
 
 #big-arrow{
-	width: 80px;
+	/* width: 80px;
 	height: 150px;
-	margin-left: 110px;
+	margin-left: 110px; */
 	rotate: calc(15deg);
+	width: 20vw;
+	height:20vh;
+	margin-left: 30vw;
 }
 
 #breaktimer-guide{
@@ -506,14 +511,17 @@ section{
 	flex-direction: column;
 	justify-content: flex-start;
 	min-width: 210px;
-	margin-top: -35px;
-	margin-left:-10px;
+	/* margin-top: -35px; */
+	margin-top: -6vh;
+	/* margin-left:-10px; */
+	margin-left: -5vw;
 	text-align: center;
 }
 
 #start-app{
 	position: fixed;
-	bottom: 80px;
+	/* bottom: 80px; */
+	bottom: 12vh;
 	left: 50%;
 	min-width: 230px;
 	text-align: center;
@@ -543,9 +551,11 @@ section{
 
 	/* intro overlay */
 	.about-message {
-		padding-left: 40px;
+		/* padding-left: 40px; */
+		padding-left:5vw;
 		font-size: 1.25rem;
-		max-width: 500px;
+		/* max-width: 500px; */
+		max-width: 60vw;
 	}
 
 	.guide-box{
@@ -553,18 +563,28 @@ section{
 	}
 
 	.button-guide{
-		margin-left: 620px;
-		margin-right: 60px;
-		gap: 420px;
+		min-width: 60vw;
+		margin-left: 35vw;
+		margin-right: 5vw;
+		gap: 15vw;
+	}
+
+	#big-arrow{
+		width: 20vw;
+		height:20vh;
+		margin-left: 5vw;
 	}
 	
 	#addtask-guide {
-		margin-top: 50px;
+		/* margin-top: 50px; */
+		margin-top: 8vh;
 	}
 	
 	#breaktimer-guide{
-		margin-top: -10px;
-		margin-left:-50px;
+		/* margin-top: -10px;
+		margin-left:-50px; */
+		margin-top: -1vh;
+		margin-left: -3vw;
 	}
 	
 	header{
@@ -594,5 +614,23 @@ section{
 	
 	body.whitenoise{
 		background-image: url('assets/images/whitenoise-bg.jpg');
+	}
+}
+
+@media (min-width: 1300px){
+
+	.about-message {
+		/* padding-left: 40px; */
+		padding-left:2.5vw;
+		font-size: 1.25rem;
+		/* max-width: 500px; */
+		max-width: 40vw;
+	}
+
+	.button-guide{
+		min-width: 50vw;
+		margin-left: 43vw;
+		margin-right: 10vw;
+		gap: 24vw;
 	}
 }

@@ -70,7 +70,7 @@ submitBtn.addEventListener("click", (e) => {
 
   //if no time or mood is selected, show alert
   if (!duration || !moodValue) {
-    alert("Please fill out both duration and mood.");
+    alert("Please fill out both focus time and vibe.");
     return;
   }
 

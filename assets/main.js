@@ -308,7 +308,7 @@ function createResetButton() {
     // clearInterval(timerInterval);
     // timerInterval = null;
     // isPaused = true;
-    resetTimerState();
+    // resetTimerState();
     currentTaskIndex = 0;
     // audioPlayer.pause();
     controlBtn.textContent = "▶ Play";

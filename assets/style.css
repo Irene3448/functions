@@ -187,10 +187,8 @@ header button{
 
 
 /*background style based on mood*/
-/* body.cozyjazz{
+body.cozyjazz{
 	background-image: url('assets/images/cozyjazz.jpg');
-	background-size: cover;
-	background-position: center;
 }
 
 body.rainyday{
@@ -207,7 +205,7 @@ body.stressfree{
 
 body.whitenoise{
 	background-image: url('assets/images/whitenoise.jpg');
-} */
+}
 
 .background-image{
 	position:fixed;
